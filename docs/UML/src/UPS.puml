@@ -1,0 +1,66 @@
+@startuml UPS
+
+interface Observable {
+    + add_observer(observer: Observer) : None
+    + delete_observer(observer: Observer) : None
+    + notify_observers() : None
+}
+        
+interface Observer {
+    + update(observable: Observable) : None
+}
+
+Observable - Observer
+
+interface DisplayElement {
+    + display(): None
+}
+
+Observer <|-- DisplayElement
+
+class UPS {
+    - min_battery_voltage : float
+    - max_battery_voltage : float
+    - max_battery_current : float
+    - min_input_voltage : float
+    - max_input_voltage : float
+    - output_voltage : float
+    - ports : int
+    - battery_voltage : float
+    - initial_battery_voltage : float
+    - devices_current : list[float]
+    - has_started_charging : bool
+    - has_started_battery_usage : bool
+    - inverter_mode : bool
+    - observers : list[Observer]
+    
+    + UPS(output_voltage: float, max_battery_current: float, ports: int, max_charging_time: float)
+    + add_observer(observer: Observer) : None
+    + delete_observer(observer: Observer) : None
+    + notify_observers() : None
+    - regular_voltage(in_voltage: float): float
+    - charge_battery(in_voltage: float): None
+    + battery_percentage(): float
+    - use_battery(): float
+    - reverse_charge(in_voltage: float): float
+    + connect_device(port: int, current: float): bool
+    + power(in_voltage: float): float
+    + is_inverter_mode(self) : bool
+}
+
+Observable <|-- UPS
+UPS - DisplayElement
+
+class BatteryStateDisplay {
+    - has_changed_mode : bool
+    - battery_percentage : float
+
+    + BatteryStateDisplay()
+    + register_in_observable(observable: Observable): None
+    + update(observable: Observable): None
+    + display(): None
+}
+
+DisplayElement <|-- BatteryStateDisplay
+
+@enduml

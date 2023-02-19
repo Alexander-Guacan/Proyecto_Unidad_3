@@ -1,0 +1,13 @@
+@startuml Grafo
+
+class Grafo {
+    - nodes: list[list[int]]
+
+    + Grafo(nodes: list[list[int]])
+    - paths_recursively(current_node: int, objective_node: int, paths: list[list[int]], path = 0) : tuple[list[list[int]], int]
+    + paths(self, start: int, end: int) : list[list[int]]
+    + shortest_path(self, start: int, end: int) : list[int]
+    + breadth_first_search(self, start: int, end: int) : list[int]
+}
+
+@enduml
