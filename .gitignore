@@ -1,0 +1,5 @@
+.vscode
+*.txt
+*.docx
+__pycache__
+docs/[NRC_8001]_TemasProyectoUnidad3_Guacan_Rivera_Alexander_David.pdf
