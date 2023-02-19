@@ -56,7 +56,7 @@ class Input:
         return int(value)
     
     @classmethod
-    def floating(cls, message: str, max_digits: int, max_decimals: int, min_digits = 1, min_decimals = 1, has_sign = False) -> int:
+    def floating(cls, message: str, max_digits: int, max_decimals: int, min_digits = 1, min_decimals = 1, has_sign = False) -> float:
         """
         Positive and negative numbers entry
 
@@ -103,7 +103,7 @@ class Input:
 
         print(flush=True)
 
-        return int(value)
+        return float(value)
     
     @classmethod
     def string(cls, message: str, is_char_allowed, max_chars: int, min_chars = 1) -> str:

@@ -18,6 +18,9 @@ class Grafo:
         """
         self.__nodos = nodes
 
+    def get_node(self, node: int) -> list[int]:
+        return self.__nodos[node]
+
     def __paths_recursively(self, current_node: int, objective_node: int, paths: list[list[int]], path = 0) -> tuple[list[list[int]], int]:
         """
         Retorna todos los caminos posibles desde un punto o nodo inicial hasta el nodo objetivo o hasta que llegue a un nodo hoja
@@ -133,7 +136,7 @@ class Grafo:
             list[int]: _description_ Recorrido en orden por cada nodo hasta llegar al nodo end. Retorna [] si no hay camino disponible
         """
         # Camino desde start a end
-        path = list[int]()
+        paths = [[int(start)]]
         # Lista de nodos visitados
         visited_nodes = list[int]()
         # Nodos vecinos por visitar de cada nodo
@@ -144,22 +147,24 @@ class Grafo:
         # Nodo start ya se ha visitado
         visited_nodes.append(start)
 
+        last_path = 0
+
         # Mientras haya nodos vecinos por recorrer
         while len(queue) > 0:
             # Seleccionamos cada nodo no visitado en el orden que se encuentran
             current_node = queue.pop(0)
 
-            # Nodo a recorrer tiene vecinos
-            if len(self.__nodos[current_node]) > 0:
-                # Agregamos nodo como posible ruta valida
-                path.append(current_node)
-            
-            # Nodo a recorrer es el nodo objetivo
+            for path in paths:
+                for node in path:
+                    if current_node in self.__nodos[node] and node == path[-1]:
+                        path.append(current_node)
+                        last_path = paths.index(path)
+                    elif current_node in self.__nodos[node] and node != path[-1]:
+                        paths.append(path[:path.index(node) + 1])
+                        last_path = len(paths) - 1
+                        
             if current_node == end:
-                # Agregamos el nodo a la ruta
-                path.append(current_node)
-                # Retornamos la ruta valida
-                return path
+                return paths[last_path]
             
             # Recorremos cada nodo vecino al nodo actual
             for neighbor in self.__nodos[current_node]:
@@ -172,3 +177,16 @@ class Grafo:
         
         # No se encontro un camino desde start hasta end
         return []
+    
+    def __repr__(self) -> str:
+        string = str()
+        index = 0
+        for node in self.__nodos:
+            string += str(index) + ' -> '
+            for son in node:
+                string += str(son) + ('' if son == node[-1] else ', ')
+            
+            string += '\n'
+            index += 1
+
+        return string

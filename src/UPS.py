@@ -300,5 +300,5 @@ class BatteryStateDisplay(DisplayElement):
             self.display()
             
     def display(self) -> None:
-        print(f"Porcentaje de bateria: {self.__battery_percentage}")
+        print(f"Porcentaje de bateria: {self.__battery_percentage if self.__battery_percentage > 0 else 0}")
         pass
