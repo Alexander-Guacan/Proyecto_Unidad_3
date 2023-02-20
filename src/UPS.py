@@ -264,41 +264,93 @@ class UPS(Observable):
         return self.__inverter_mode
     
 class DisplayElement(Observer):
+    """
+    Interfaz de objetos que funjiran como pantalla de datos del UPS
+
+    Methods:
+        + display(): None
+    """
 
     @abstractmethod
     def display(self) -> None:
-        pass
+        """
+        Desplegar en pantalla las actualizaciones de datos del UPS
+        """
 
 class BatteryStateDisplay(DisplayElement):
+    """
+    Informa de las actualizaciones del estado y/o porcentaje de la bateria
+
+    Attributes:
+        - has_changed_mode : bool
+        - battery_percentage : float
+
+    Methods:
+        + BatteryStateDisplay()
+        + register_in_observable(observable: Observable): None
+        + update(observable: Observable): None
+        + display(): None
+    """
+
     def __init__(self) -> None:
+        """
+        Constructor por defecto
+        """
+        # Verifica si ha cambiado el modo de regulador a inversor
         self.__has_changed_mode = False
+        # Guarda el ultimo estado del porcentaje de la bateria
         self.__battery_percentage = float()
     
     def register_in_observable(self, observable: Observable) -> None:
+        """
+        Agregar este dispositivo a la lista de suscriptores a ser notificados por las actualizacion del UPS
+
+        Args:
+            observable (Observable): _description_
+        """
+        # Objeto observable no pertence a la clase UPS
         if not isinstance(observable, UPS):
             return
-        
+        # Agregar este objeto para ser informado por el UPS
         observable.add_observer(self)
+        # Estado inicial del porcentaje de bateria del UPS
         self.__battery_percentage = observable.battery_percentage()
 
     def update(self, observable: Observable) -> None:
+        """
+        Imprime las actualizaciones de la bateria del UPS
+
+        Args:
+            observable (Observable): _description_ UPS del cual toma los datos
+        """
+        # Objeto observable no pertence a la clase UPS
         if not isinstance(observable, UPS):
             return
         
+        # Primer cambio al modo inversor
         if observable.is_inverter_mode() and not self.__has_changed_mode:
             print("Cambiando a modo inversor")
             self.__has_changed_mode = True
+        # Se termino el modo inversor
         elif not observable.is_inverter_mode() and self.__has_changed_mode:
             self.__has_changed_mode = False
         
+        # UPS se encuentra en el modo inversor
         if self.__has_changed_mode:
+            # Actualizamos el porcentaje de bateria
             self.__battery_percentage = observable.battery_percentage()
+            # Imprimir actualizaciones
             self.display()
+        # UPS en modo carga
         elif observable.battery_percentage() > self.__battery_percentage:
             print("Cargando bateria")
+            # Actualizamos el porcentaje de bateria
             self.__battery_percentage = observable.battery_percentage()
+            # Imprimir actualizaciones
             self.display()
             
     def display(self) -> None:
+        """
+        Imprimir actualizaciones de la bateria
+        """
         print(f"Porcentaje de bateria: {self.__battery_percentage if self.__battery_percentage > 0 else 0}")
-        pass

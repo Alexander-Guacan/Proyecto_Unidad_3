@@ -3,11 +3,16 @@ class Grafo:
     Estructura de datos que representa un grafo a traves del uso de listas de adyacencia, donde cada lista representa un nodo y cada elemento de cada lista representa el numero del nodo o los hijos a los que estan conectados cada uno
 
     Atributos:
-        nodos
+        - nodos
 
     Metodos:
-        __paths_recursively
-        caminos
+        + Grafo(nodes: list[list[int]])
+        + get_node(node: int): list[int]
+        - paths_recursively(current_node: int, objective_node: int, paths: list[list[int]], path = 0) : tuple[list[list[int]], int]
+        + paths(self, start: int, end: int) : list[list[int]]
+        + shortest_path(self, start: int, end: int) : list[int]
+        + breadth_first_search(self, start: int, end: int) : list[int]
+        
     """
     def __init__(self, nodes: list[list[int]]) -> None:
         """
@@ -153,17 +158,25 @@ class Grafo:
         while len(queue) > 0:
             # Seleccionamos cada nodo no visitado en el orden que se encuentran
             current_node = queue.pop(0)
-
+            
+            # Recorremos todas las rutas para ver con cual conecta
             for path in paths:
+                # Verificamos el nodo de conexion directa al nodo actual
                 for node in path:
+                    # Sigue la conexion del ultimo nodo
                     if current_node in self.__nodos[node] and node == path[-1]:
+                        # Incrementamos el camino recorrido
                         path.append(current_node)
                         last_path = paths.index(path)
+                    # Bifurcacion de un nodo
                     elif current_node in self.__nodos[node] and node != path[-1]:
+                        # Copiamos la ruta anterior a la bifurcacion
                         paths.append(path[:path.index(node) + 1])
+                        # Actualizamos el ultimo camino recorrido
                         last_path = len(paths) - 1
-                        
+            # Se encuentra el nodo objetivo
             if current_node == end:
+                # Ultimo camino recorrido
                 return paths[last_path]
             
             # Recorremos cada nodo vecino al nodo actual
@@ -177,16 +190,3 @@ class Grafo:
         
         # No se encontro un camino desde start hasta end
         return []
-    
-    def __repr__(self) -> str:
-        string = str()
-        index = 0
-        for node in self.__nodos:
-            string += str(index) + ' -> '
-            for son in node:
-                string += str(son) + ('' if son == node[-1] else ', ')
-            
-            string += '\n'
-            index += 1
-
-        return string

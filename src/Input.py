@@ -64,6 +64,8 @@ class Input:
             message (str): _description_ String to print before to input numbers
             max_digits (int): _description_ Number of maximum digits to enter
             min_digits (int, optional): _description_. Defaults to 1. Number of minimum digits to enter
+            max_decimals (int): _description_ Number of maximum decimals to enter
+            min_decimals (int, optional): _description_. Defaults to 1. Number of minimum decimals to enter
             has_sign (bool, optional): _description_. Defaults to False. Enables or disables negative sign input
 
         Returns:

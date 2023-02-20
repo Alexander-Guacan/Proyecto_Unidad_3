@@ -1,8 +1,9 @@
 from System import System
-from GraphTextFile import GraphTextFile
 
 def main() -> None:
+    # Instancia del sistema del ups
     ups_system = System()
+    # Inicia operacion del ups
     ups_system.menu()
 
 if __name__ == "__main__":
