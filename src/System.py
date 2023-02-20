@@ -119,9 +119,11 @@ class System:
             str: _description_ Texto del menu principal
         """
         # Mensaje de pantalla de menu principal
-        return "1.- Encender UPS"\
+        return "UPS INTELIGENTE"\
+        + "\n1.- Encender UPS"\
         + "\n2.- Configurar UPS"\
         + "\n3.- Salir"\
+        + "\nCreado por: KRAMER\n\n\n"
 
     def __setting_ups(self) -> None:
         """
