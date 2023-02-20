@@ -14,6 +14,7 @@ class Observable(ABC):
     def add_observer(self, observer: "Observer") -> None:
         """
         Agregamos un observador que sera notificado cuando haya un cambio que afecte a dicho observador
+        
         Args:
             observer (Observer): _description_ Objeto observador a agregar
         """

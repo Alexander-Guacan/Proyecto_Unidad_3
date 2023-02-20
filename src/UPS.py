@@ -72,14 +72,29 @@ class UPS(Observable):
         self.__observers = list[Observer]()
 
     def add_observer(self, observer: "Observer") -> None:
+        """
+        Agregamos un observador que sera notificado cuando haya un cambio que afecte a dicho observador
+
+        Args:
+            observer (Observer): _description_ Objeto observador a agregar
+        """
         if observer not in self.__observers:
             self.__observers.append(observer)
 
     def delete_observer(self, observer: "Observer") -> None:
+        """
+        Eliminar un observador. Dicho observador ya no sera notificado de cambios
+
+        Args:
+            observer (Observer): _description_ Objeto observador a eliminar
+        """
         if observer in self.__observers:
             self.__observers.remove(observer)
 
     def notify_observers(self) -> None:
+        """
+        Actualizar de los cambios a los observadores
+        """
         for observer in self.__observers:
             observer.update(self)
 
